@@ -1,0 +1,348 @@
+<mat-card class="parentCard">
+  <mat-card-header>
+    <mat-card-title>Employee Information</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    <mat-stepper linear #stepper>
+
+      <mat-step [stepControl]="personalInfo">
+        <form [formGroup]="personalInfo">
+          <mat-card class="childCard">
+            <mat-card-header>
+              <mat-card-title>Personal Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Full Name</mat-label>
+                    <input matInput placeholder="Enter Full Name" formControlName="fullName">
+                    
+                    <mat-hint [ngStyle]="{color: warnColor}"
+                      *ngIf="personalInfo.controls['fullName'].invalid && (personalInfo.controls['fullName'].dirty || personalInfo.controls['fullName'].touched)">
+                      <ng-container *ngIf="personalInfo.controls['fullName'].hasError('required')">This field is
+                        required</ng-container>
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Enter Email ID" formControlName="email">
+                    
+                    <mat-hint [ngStyle]="{color: warnColor}"
+                      *ngIf="personalInfofromControl['email'].invalid && (personalInfofromControl['email'].dirty || personalInfofromControl['email'].touched)">
+                      <ng-container *ngIf="personalInfofromControl['email'].errors?.['required']">This field is
+                        required</ng-container>
+                      <ng-container *ngIf="personalInfofromControl['email'].errors?.['email']">Please Enter a Valid
+                        Email</ng-container>
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput placeholder="Enter Phone Number" formControlName="phone">
+                    
+                    <mat-hint [ngStyle]="{color: warnColor}"
+                      *ngIf="personalInfofromControl['phone'].invalid && (personalInfofromControl['phone'].dirty || personalInfofromControl['phone'].touched)">
+                      <ng-container *ngIf="personalInfofromControl['phone'].errors?.['required']">This field is
+                        required</ng-container>
+                      <ng-container *ngIf="personalInfofromControl['phone'].errors?.['pattern']">Please Enter a Valid
+                        Phone
+                        Number</ng-container>
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Languages</mat-label>
+                    <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                      <ng-container *ngFor="let language of languages">
+                        <mat-chip-row (removed)="remove(language)">
+                          {{language}}
+                          <button matChipRemove [attr.aria-label]="'remove ' + language">
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                      </ng-container>
+                    </mat-chip-grid>
+                    <input placeholder="Enter The language known" #languageInput formControlName="language"
+                      [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addLanguage($event)" />
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                      <mat-option [value]="language"
+                        *ngFor="let language of (filteredLanguage | async)">{{language}}</mat-option>
+                    </mat-autocomplete>
+                    
+                    <mat-hint>Type your language then hit comma or enter</mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="buttonSection">
+                <button mat-raised-button color="primary" matStepperNext>Next</button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="workExperience">
+        <form [formGroup]="workExperience">
+          <mat-card class="childCard">
+            <mat-card-header>
+              <mat-card-title>Work Experience Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div formArrayName="workExp">
+                <div *ngFor="let skill of workExp.controls;let i=index">
+                  <div [formGroupName]="i">
+                    <button mat-mini-fab color="warn" *ngIf="workExp.controls.length>1" (click)="removeItemworkExp(i)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <div class="row">
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Company Name</mat-label>
+                          <input matInput placeholder="Enter Company Name" formControlName="companyName">
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="workExp.at(i).get('companyName')?.hasError && (workExp.at(i).get('companyName')?.dirty || workExp.at(i).get('companyName')?.touched)">
+                            <ng-container *ngIf="workExp.at(i).get('companyName')?.hasError('required')">This field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Role</mat-label>
+                          <input matInput placeholder="Enter Role" formControlName="role">
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="workExp.at(i).get('role')?.hasError && (workExp.at(i).get('role')?.dirty || workExp.at(i).get('role')?.touched)">
+                            <ng-container *ngIf="workExp.at(i).get('role')?.hasError('required')">This field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Start Date</mat-label>
+                          <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+                          <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                          <mat-datepicker #startPicker color="primary"></mat-datepicker>
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="workExp.at(i).get('startDate')?.hasError && (workExp.at(i).get('startDate')?.dirty || workExp.at(i).get('startDate')?.touched)">
+                            <ng-container *ngIf="workExp.at(i).get('startDate')?.hasError('required')">This field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Start Date</mat-label>
+                          <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                          <mat-datepicker #endPicker color="primary"></mat-datepicker>
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="workExp.at(i).get('endDate')?.hasError && (workExp.at(i).get('endDate')?.dirty || workExp.at(i).get('endDate')?.touched)">
+                            <ng-container *ngIf="workExp.at(i).get('endDate')?.hasError('required')">This field is
+                              required</ng-container>
+                            <ng-container *ngIf="workExp.at(i).get('endDate')?.hasError('dateRange')">End Date should
+                              gretter than start date</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <mat-divider *ngIf="workExp.controls.length>1 || workExp.controls.length-1 !==i"></mat-divider>
+                </div>
+                <button mat-mini-fab color="primary" (click)="addWorkExp()"
+                  [disabled]="workExp.controls[workExp.controls.length-1].invalid">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="buttonSection">
+                <button mat-raised-button matStepperPrevious class="back">Back</button>
+                <button mat-raised-button color="primary" matStepperNext>Next</button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="education">
+
+        <form [formGroup]="education">
+          <mat-card class="childCard">
+            <mat-card-header>
+              <mat-card-title>Education Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div formArrayName="educationInfo">
+                <div *ngFor="let education of educationInfo.controls;let i=index">
+                  <div [formGroupName]="i">
+                    <button mat-mini-fab color="warn" *ngIf="educationInfo.controls.length>1"
+                      (click)="removeItemEducation(i)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <div class="row">
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Institute Name</mat-label>
+                          <input matInput placeholder="Enter Intitute Name" formControlName="instituteName">
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="educationInfo.at(i).get('instituteName')?.hasError && (educationInfo.at(i).get('instituteName')?.dirty || educationInfo.at(i).get('instituteName')?.touched)">
+                            <ng-container *ngIf="educationInfo.at(i).get('instituteName')?.hasError('required')">This
+                              field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Institute Type</mat-label>
+                          <input matInput placeholder="Enter Institute Type" formControlName="instituteType">
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="educationInfo.at(i).get('instituteType')?.hasError && (educationInfo.at(i).get('instituteType')?.dirty || educationInfo.at(i).get('instituteType')?.touched)">
+                            <ng-container *ngIf="educationInfo.at(i).get('instituteType')?.hasError('required')">This
+                              field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Degree</mat-label>
+                          <input matInput placeholder="Enter Degree" formControlName="degree">
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="educationInfo.at(i).get('degree')?.hasError && (educationInfo.at(i).get('degree')?.dirty || educationInfo.at(i).get('degree')?.touched)">
+                            <ng-container *ngIf="educationInfo.at(i).get('degree')?.hasError('required')">This field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>End Date</mat-label>
+                          <input matInput [matDatepicker]="endPicker" formControlName="date">
+                          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                          <mat-datepicker #endPicker color="primary"></mat-datepicker>
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="educationInfo.at(i).get('date')?.hasError && (educationInfo.at(i).get('date')?.dirty || educationInfo.at(i).get('date')?.touched)">
+                            <ng-container *ngIf="educationInfo.at(i).get('date')?.hasError('required')">This field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <mat-divider
+                    *ngIf="educationInfo.controls.length>1 || educationInfo.controls.length-1 !==i"></mat-divider>
+                </div>
+                <button mat-mini-fab color="primary" (click)="addEducation()"
+                  [disabled]="educationInfo.controls[educationInfo.controls.length-1].invalid">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+
+
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="buttonSection">
+                <button mat-raised-button matStepperPrevious class="back">Back</button>
+                <button mat-raised-button color="primary" matStepperNext>Next</button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="skills">
+
+        <form [formGroup]="skills">
+          <mat-card class="childCard">
+            <mat-card-header>
+              <mat-card-title>Skills</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div formArrayName="skillsInfo">
+                <div *ngFor="let skl of skillarrInfo.controls;let i=index">
+                  <div [formGroupName]="i">
+                    <button mat-mini-fab color="warn" *ngIf="skillarrInfo.controls.length>1"
+                      (click)="removeSkill(i)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <div class="row">
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Skill Name</mat-label>
+                          <input matInput placeholder="Enter Skill Name" formControlName="skillName">
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="skillarrInfo.at(i).get('skillName')?.hasError && (skillarrInfo.at(i).get('skillName')?.dirty || skillarrInfo.at(i).get('skillName')?.touched)">
+                            <ng-container *ngIf="skillarrInfo.at(i).get('skillName')?.hasError('required')">This
+                              field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Skill Level</mat-label>
+                          <select matNativeControl formControlName="skillLevel">
+                            <option value="Begineer">Begineer</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Expert">Expert</option>
+                          </select>
+                          <!-- <input matInput placeholder="Enter Skill Level" formControlName="skillLevel"> -->
+                          
+                          <mat-hint [ngStyle]="{color: warnColor}"
+                            *ngIf="skillarrInfo.at(i).get('skillLevel')?.hasError && (skillarrInfo.at(i).get('skillLevel')?.dirty || skillarrInfo.at(i).get('skillLevel')?.touched)">
+                            <ng-container *ngIf="skillarrInfo.at(i).get('skillLevel')?.hasError('required')">This
+                              field is
+                              required</ng-container>
+                          </mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <mat-divider
+                    *ngIf="skillarrInfo.controls.length>1 || skillarrInfo.controls.length-1 !==i"></mat-divider>
+                </div>
+                <button mat-mini-fab color="primary" (click)="addNewSkill()"
+                  [disabled]="skillarrInfo.controls[skillarrInfo.controls.length-1].invalid">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+
+
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="buttonSection">
+                <button mat-raised-button matStepperPrevious class="back">Back</button>
+                <button mat-raised-button color="primary" (click)="onsubmit()">Submit</button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </mat-card-content>
+</mat-card>

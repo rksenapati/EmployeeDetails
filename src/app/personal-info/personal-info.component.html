@@ -1,0 +1,111 @@
+<!-- <div *ngIf="formGroup"  [formGroup]="formService.personalInfoForm">
+    <h2>Personal Information</h2>
+        <mat-form-field class="example-full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="fullName">
+            <mat-hint><strong>Don't disclose personal info</strong> </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-hint><strong>Don't disclose personal info</strong> </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone">
+            <mat-hint><strong>Don't disclose personal info</strong> </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="example-chip-list">
+            <mat-label>Favorite Fruits</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                <ng-container *ngFor="let language of languages">
+                <mat-chip-row (removed)="remove(language)">
+                  {{language}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + language">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+            </ng-container>
+            </mat-chip-grid>
+            <input placeholder="Enter The language known" #languageInput formControlName="language"
+              [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"/>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option [value]="language" *ngFor="let language of (filteredLanguage | async)">{{language}}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+</div> -->
+<ng-container *ngIf="formGroup" [formGroup]="formService.personalInfoForm">
+  <app-material-card title="Personal Information Details">
+    <ng-container body>
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Full Name</mat-label>
+            <input matInput placeholder="Enter Full Name" formControlName="fullName">
+
+            <mat-hint [ngStyle]="{color: formService.warnColor}"
+              *ngIf="formService.personalInfoForm.controls['fullName'].invalid && (formService.personalInfoForm.controls['fullName'].dirty || formService.personalInfoForm.controls['fullName'].touched)">
+              <ng-container *ngIf="formService.personalInfoForm.controls['fullName'].hasError('required')">This field is
+                required</ng-container>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter Email ID" formControlName="email">
+
+            <mat-hint [ngStyle]="{color: formService.warnColor}"
+              *ngIf="formService.personalInfoForm.controls['email'].invalid && (formService.personalInfoForm.controls['email'].dirty || formService.personalInfoForm.controls['email'].touched)">
+              <ng-container *ngIf="formService.personalInfoForm.controls['email'].errors?.['required']">This field is
+                required</ng-container>
+              <ng-container *ngIf="formService.personalInfoForm.controls['email'].errors?.['email']">Please Enter a
+                Valid
+                Email</ng-container>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Enter Phone Number" formControlName="phone">
+
+            <mat-hint [ngStyle]="{color: formService.warnColor}"
+              *ngIf="formService.personalInfoForm.controls['phone'].invalid && (formService.personalInfoForm.controls['phone'].dirty || formService.personalInfoForm.controls['phone'].touched)">
+              <ng-container *ngIf="formService.personalInfoForm.controls['phone'].errors?.['required']">This field is
+                required</ng-container>
+              <ng-container *ngIf="formService.personalInfoForm.controls['phone'].errors?.['pattern']">Please Enter a
+                Valid
+                Phone
+                Number</ng-container>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Language Known</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Fruit selection">
+              <ng-container *ngFor="let language of languages">
+                <mat-chip-row (removed)="remove(language)">
+                  {{language}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + language">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              </ng-container>
+            </mat-chip-grid>
+            <input placeholder="Enter The language known" #languageInput formControlName="language"
+              [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="addLanguage($event)" />
+
+            <mat-hint>Type your language then hit comma or enter</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+  </app-material-card>
+</ng-container>

@@ -1,0 +1,51 @@
+<ng-container *ngIf="formGroup" [formGroup]="formService.skillsForm">
+  <app-material-card title="Education Deatils">
+    <ng-container body *ngIf="formService.skillsFormArray.controls.length >0" formArrayName="skills">
+      <div *ngFor="let skill of formService.skillsFormArray.controls;let i=index">
+        <div [formGroupName]="i">
+          <button mat-mini-fab color="warn" class="delete" *ngIf="formService.skillsFormArray.controls.length>1"
+            (click)="removeItem(i)" type="button">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Skill Name</mat-label>
+                <input matInput placeholder="Enter Skill Name" formControlName="skillName">
+
+                <mat-hint [ngStyle]="{color: formService.warnColor}"
+                  *ngIf="formService.skillsFormArray.at(i).get('skillName')?.hasError && (formService.skillsFormArray.at(i).get('skillName')?.dirty || formService.skillsFormArray.at(i).get('skillName')?.touched)">
+                  <ng-container *ngIf="formService.skillsFormArray.at(i).get('skillName')?.hasError('required')">This
+                    field is
+                    required</ng-container>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Skill Level</mat-label>
+                <select matNativeControl formControlName="skillLevel">
+                  <option value="Begineer">Begineer</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Expert">Expert</option>
+                </select>
+
+                <mat-hint [ngStyle]="{color: formService.warnColor}"
+                  *ngIf="formService.skillsFormArray.at(i).get('skillLevel')?.hasError && (formService.skillsFormArray.at(i).get('skillLevel')?.dirty || formService.skillsFormArray.at(i).get('skillLevel')?.touched)">
+                  <ng-container *ngIf="formService.skillsFormArray.at(i).get('skillLevel')?.hasError('required')">This
+                    field is
+                    required</ng-container>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <mat-divider *ngIf="formService.skillsFormArray.controls.length>1"></mat-divider>
+      </div>
+      <button mat-mini-fab color="primary" (click)="addItem()"
+        [disabled]="formService.skillsFormArray.controls[formService.skillsFormArray.controls.length-1].invalid" type="button">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </ng-container>
+  </app-material-card>
+</ng-container>

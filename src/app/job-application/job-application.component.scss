@@ -1,0 +1,17 @@
+mat-card-actions .buttonSection{
+    width: 100%;
+    text-align: right;
+}
+.back{
+    margin-right: 5px;
+}
+.buttonSection{
+    width: 100%;
+    padding: 10px;
+    .next{
+        float: right;
+    }
+    button{
+        width: 200px;
+    }
+}

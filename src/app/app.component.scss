@@ -1,25 +1,8 @@
-mat-form-field {
-    padding: 2%;
-    width: 90%;
-}
-mat-card-actions .buttonSection{
+mat-card-actions .buttonSection {
     width: 100%;
     text-align: right;
 }
-.back{
+
+.back {
     margin-right: 5px;
 }
-::ng-deep .mat-horizontal-stepper-header{
-    pointer-events: none !important;
-}
-::ng-deep .mat-horizontal-stepper-header-container {
-    display: none !important;
-  }
-  .parentCard{
-    mat-card-header{
-        padding: 20px;
-    }
-    .childCard{
-        padding: 20px;
-    }
-  }

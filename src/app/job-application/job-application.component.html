@@ -1,0 +1,14 @@
+<mat-progress-bar mode="determinate" [value]="30*currentStep"></mat-progress-bar>
+<app-material-card title="Emplyee Information Form">
+    <ng-container [ngSwitch]="currentStep" body>
+        <app-personal-info *ngSwitchCase="0" [formGroup]="formService.personalInfoForm"></app-personal-info>
+        <app-education *ngSwitchCase="1" [formGroup]="formService.educationForm"></app-education>
+        <app-work-experience *ngSwitchCase="2" [formGroup]="formService.workExperienceForm"></app-work-experience>
+        <app-skills *ngSwitchCase="3" [formGroup]="formService.skillsForm"></app-skills>
+    </ng-container>
+    <div class="buttonSection" action>
+        <button mat-raised-button class="back" (click)="prevStep()" *ngIf="currentStep>0">Back</button>
+        <button mat-raised-button color="primary" class="next"
+            (click)="nextStep()">{{currentStep==3?'Submit':'Next'}}</button>
+    </div>
+</app-material-card>

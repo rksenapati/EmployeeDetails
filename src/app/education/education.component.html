@@ -1,0 +1,84 @@
+<ng-container *ngIf="formGroup" [formGroup]="formService.educationForm">
+    <app-material-card title="Education Deatils">
+        <ng-container body *ngIf="formService.educationFormArray.controls.length >0" formArrayName="education">
+            <div *ngFor="let education of formService.educationFormArray.controls;let i=index">
+                <div [formGroupName]="i">
+                    <div class="delete">
+                        <button mat-mini-fab color="warn"
+                            *ngIf="formService.educationFormArray.controls.length>1" (click)="removeItem(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Institute Name</mat-label>
+                                <input matInput placeholder="Enter Intitute Name" formControlName="instituteName">
+
+                                <mat-hint [ngStyle]="{color: formService.warnColor}"
+                                    *ngIf="formService.educationFormArray.at(i).get('instituteName')?.hasError && (formService.educationFormArray.at(i).get('instituteName')?.dirty || formService.educationFormArray.at(i).get('instituteName')?.touched)">
+                                    <ng-container
+                                        *ngIf="formService.educationFormArray.at(i).get('instituteName')?.hasError('required')">This
+                                        field is
+                                        required</ng-container>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Institute Type</mat-label>
+                                <input matInput placeholder="Enter Institute Type" formControlName="instituteType">
+
+                                <mat-hint [ngStyle]="{color: formService.warnColor}"
+                                    *ngIf="formService.educationFormArray.at(i).get('instituteType')?.hasError && (formService.educationFormArray.at(i).get('instituteType')?.dirty || formService.educationFormArray.at(i).get('instituteType')?.touched)">
+                                    <ng-container
+                                        *ngIf="formService.educationFormArray.at(i).get('instituteType')?.hasError('required')">This
+                                        field is
+                                        required</ng-container>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Degree</mat-label>
+                                <input matInput placeholder="Enter Degree" formControlName="degree">
+
+                                <mat-hint [ngStyle]="{color: formService.warnColor}"
+                                    *ngIf="formService.educationFormArray.at(i).get('degree')?.hasError && (formService.educationFormArray.at(i).get('degree')?.dirty || formService.educationFormArray.at(i).get('degree')?.touched)">
+                                    <ng-container
+                                        *ngIf="formService.educationFormArray.at(i).get('degree')?.hasError('required')">This
+                                        field
+                                        is
+                                        required</ng-container>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>End Date</mat-label>
+                                <input matInput [matDatepicker]="endPicker" formControlName="date">
+                                <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endPicker color="primary"></mat-datepicker>
+                                <mat-hint [ngStyle]="{color: formService.warnColor}"
+                                    *ngIf="formService.educationFormArray.at(i).get('date')?.hasError && (formService.educationFormArray.at(i).get('date')?.dirty || formService.educationFormArray.at(i).get('date')?.touched)">
+                                    <ng-container
+                                        *ngIf="formService.educationFormArray.at(i).get('date')?.hasError('required')">This
+                                        field
+                                        is
+                                        required</ng-container>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider *ngIf="formService.educationFormArray.controls.length>1"></mat-divider>
+            </div>
+            <button mat-mini-fab color="primary" (click)="addItem()"
+                [disabled]="formService.educationFormArray.controls[formService.educationFormArray.controls.length-1].invalid">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+        </ng-container>
+    </app-material-card>
+</ng-container>
